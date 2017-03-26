@@ -44,10 +44,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Demand.cs" />
+    <Compile Include="DemandDistanceSorter.cs" />
     <Compile Include="Graph.cs" />
+    <Compile Include="GreedyHeuristic.cs" />
     <Compile Include="IListExtensions.cs" />
-    <Compile Include="MetaheuristicAlgorithm.cs" />
+    <Compile Include="HeuristicAlgorithm.cs" />
     <Compile Include="Parser.cs" />
+    <Compile Include="Path.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimulatedAnnealing.cs" />

@@ -26,12 +26,15 @@ namespace RSAHeuristicSolver
             };
 
             SimulatedAnnealing SA = new SimulatedAnnealing();
+            GreedyHeuristic greedy = new GreedyHeuristic();
             Parser parser = new Parser();
-            parser.addScenarios(dir, scenarioFiles[4]);
+            parser.addScenarios(dir, scenarioFiles[0]);
             double avgEnergy = 0.0, avgTime = 0.0;
             foreach (var scenario in parser.ScenarioList)
             {
-                SA.Start(initialTemperature, alpha, endTemperature, scenario);
+                var comp = new DemandDistanceSorter();
+                greedy.Start(scenario, comp);
+                //SA.Start(initialTemperature, alpha, endTemperature, scenario);
                 string result = scenario.ScenarioName + " " + scenario.ObjectiveFunctionResult + " " + scenario.ElapsedAlgorithmTime;
                 Console.WriteLine(result);
                 avgEnergy += scenario.ObjectiveFunctionResult;

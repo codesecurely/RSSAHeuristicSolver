@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RSAHeuristicSolver
 {
-    class SimulatedAnnealing : MetaheuristicAlgorithm
+    class SimulatedAnnealing : HeuristicAlgorithm
     {
         private int _bestEnergy;
         private int _currentEnergy;

@@ -10,7 +10,7 @@ namespace RSAHeuristicSolver
 {
     class SpectrumEdgeAllocator
     {
-        private List<int> _spectrum;
+        private List<int> _spatialResource;
         private int _spectrumSize;
 
         public int SpectrumSize
@@ -20,44 +20,44 @@ namespace RSAHeuristicSolver
 
         public SpectrumEdgeAllocator()
         {
-            _spectrum = new List<int>();
+            _spatialResource = new List<int>();
             _spectrumSize = 0;
         }
 
-        public bool IsFree(int start, int end)
+        public bool IsFree(int firstSlice, int lastSlice)
         {
-            while (_spectrum.Count < end)
-                _spectrum.Add(0);
-            for (int channel = start; channel < end; channel++)
-                if (_spectrum[channel] == 1)
+            while (_spatialResource.Count < lastSlice)
+                _spatialResource.Add(0);
+            for (int slice = firstSlice; slice < lastSlice; slice++)
+                if (_spatialResource[slice] == 1)
                     return false;
             return true;
         }
 
-        public void Allocate(int start, int end)
+        public void Allocate(int firstSlice, int lastSlice)
         {
-            if (IsFree(start, end))
+            if (IsFree(firstSlice, lastSlice))
             {
-                for (int channel = start; channel < end; channel++)
+                for (int slice = firstSlice; slice < lastSlice; slice++)
                 {
-                    _spectrum[channel] = 1;
+                    _spatialResource[slice] = 1;
                 }
-                _spectrumSize = end;
+                _spectrumSize = lastSlice;
             }
         }
 
         public int GetFirstFreeSlice(int size)
         {
-            int channel = 0;
-            for (channel = 0; channel <= _spectrum.Count; channel++)
-                if (IsFree(channel, channel + _spectrumSize))
-                    return channel;
+            int slice = 0;
+            for (slice = 0; slice <= _spatialResource.Count; slice++)
+                if (IsFree(slice, slice + _spectrumSize))
+                    return slice;
             return 0;
         }
 
         public void Erase()
         {
-            _spectrum.Clear();
+            _spatialResource.Clear();
             _spectrumSize = 0;
         }
     }
@@ -71,9 +71,9 @@ namespace RSAHeuristicSolver
             _edges = edges;
         }
 
-        public int GetFirstFreeSpectrumOnPath(Path path)
+        public int GetFirstFreeSpectrumOnPath(Path path) //First-Fit allocation
         {
-            int minSpectrum = 0;
+            int minFreeSliceNumber = 0;
             bool keepAllocating = true;
             while (keepAllocating)
             {
@@ -81,26 +81,26 @@ namespace RSAHeuristicSolver
                 foreach (int e in path.EdgesBelongingToPath)
                 {
                     Edge edge = _edges[e];
-                    int firstFreeSpectrum = edge.SpectrumEdgeAllocator.GetFirstFreeSlice(path.NumberOfSlices);
-                    if (firstFreeSpectrum > minSpectrum)
+                    int firstFreeSlice = edge.SpectrumEdgeAllocator.GetFirstFreeSlice(path.NumberOfSlices);
+                    if (firstFreeSlice > minFreeSliceNumber)
                     {
-                        minSpectrum = firstFreeSpectrum;
+                        minFreeSliceNumber = firstFreeSlice;
                         keepAllocating = true;
                     }
                 }
             }
-            return minSpectrum;
+            return minFreeSliceNumber;
         }
 
         //allocated channel must be the same for each edge on a path
         public void AllocateFirstFreeSpectrumOnPath(Path path)
         {
             int spectrumSize = path.NumberOfSlices;
-            int start = GetFirstFreeSpectrumOnPath(path);
+            int firstSlice = GetFirstFreeSpectrumOnPath(path);
             foreach (int e in path.EdgesBelongingToPath)
             {
                 Edge edge = _edges[e];
-                edge.SpectrumEdgeAllocator.Allocate(start, start + spectrumSize);
+                edge.SpectrumEdgeAllocator.Allocate(firstSlice, firstSlice + spectrumSize);
             }
         }
 

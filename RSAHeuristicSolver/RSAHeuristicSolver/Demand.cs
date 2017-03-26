@@ -15,15 +15,18 @@ namespace RSAHeuristicSolver
         protected List<Path> _candidatePaths;
         protected int _sourceNode;
         protected int _numberOfPaths;
-        protected const double SliceSize = 6.25;
+        protected const double SliceSize = 12.5;
         protected abstract void CalculateNumberOfSlices();
         public abstract void SetRandomPath();
         public abstract void AllocateDemand(SpectrumPathAllocator allocator);
+        public abstract int GetShortestPath();
 
         public List<Path> CandidatePaths
         {
             get { return _candidatePaths; }
         }
+
+        
     }
 
     class UnicastDemand : Demand
@@ -92,6 +95,18 @@ namespace RSAHeuristicSolver
             allocator.AllocateFirstFreeSpectrumOnPath(path);
         }
 
+        public override int GetShortestPath()
+        {
+            int shortestPath = Int32.MaxValue;
+            foreach (var path in _candidatePaths)
+            {
+                if (shortestPath > path.PathLength)
+                    shortestPath = path.PathLength;
+            }
+
+            return shortestPath;
+        }
+
         public Path GetDemandPath()
         {
             return _candidatePaths[_demandPath];
@@ -100,10 +115,6 @@ namespace RSAHeuristicSolver
 
     class AnycastDemand : Demand
     {
-        //protected List<Path> _candidatePaths;
-        //protected int _sourceNode;
-        //protected int _numberOfPaths;
-        //protected const double SliceSize = 6.25;
         private int _upstreamVolume;
         private int _downstreamVolume;
         private int _demandPathUp;
@@ -212,6 +223,21 @@ namespace RSAHeuristicSolver
             if (PathsToAndFromDataCenters[DataCenterNodes[dataCenter]][1][pathDown].PathLength <
                 GetDemandPathDown().PathLength)
                 SelectDemandPathDown(pathDown);
+        }
+
+        public override int GetShortestPath()
+        {
+            int shortestPath = Int32.MaxValue;
+            foreach (var p in _pathsToAndFromDataCenters)
+            {
+                foreach (var down in p.Value[1])
+                {
+                    if (shortestPath > down.PathLength)
+                        shortestPath = down.PathLength;
+                }
+            }
+
+            return shortestPath;
         }
 
         public override void AllocateDemand(SpectrumPathAllocator allocator)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RSAHeuristicSolver
 {
-    abstract class MetaheuristicAlgorithm
+    abstract class HeuristicAlgorithm
     {
         protected SpectrumPathAllocator _allocator;
         protected DemandsVector _demands;
