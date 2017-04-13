@@ -263,7 +263,12 @@ namespace RSAHeuristicSolver
         private int _k;
         private double _elapsedAlgorithmTime;
         private int _objectiveFunctionResult; //highest slice number
+        private int _spatialResourcesCount;
 
+        public int SpatialResourcesCount
+        {
+            get { return _spatialResourcesCount; }
+        }
 
         public CandidatePathsParser CandidatePaths
         {
@@ -319,9 +324,10 @@ namespace RSAHeuristicSolver
             get { return _scenarioName; }
         }
 
-        public Scenario(string scenario, string path)
+        public Scenario(string scenario, string path, int spatialResourcesCount)
         {
             _scenarioName = scenario;
+            _spatialResourcesCount = spatialResourcesCount;
             _k = Convert.ToInt32(scenario.Substring(7, 2));
             var dict = new Dictionary<string, string>(MakeDictOfFiles(scenario, path));
             _networkTopology = new NetworkTopologyParser(dict["net"]);
@@ -358,10 +364,12 @@ namespace RSAHeuristicSolver
         private PathLengthParser _pathLengths;
         private DataCentersParser _dataCenters;
         private int _k;
+        private int _spatialResourcesCount;
 
-        public Parser()
+        public Parser(int spatialResourcesCount)
         {
             _scenarioList = new List<Scenario>();
+            _spatialResourcesCount = spatialResourcesCount;
         }
 
         public List<Scenario> ScenarioList
@@ -374,7 +382,7 @@ namespace RSAHeuristicSolver
             string[] scenarioNames = getScenarioNames(path + "\\" + filename);
             foreach (var s in scenarioNames)
             {
-                Scenario scenario = new Scenario(s, path);
+                Scenario scenario = new Scenario(s, path, _spatialResourcesCount);
                 _scenarioList.Add(scenario);
             }
         }

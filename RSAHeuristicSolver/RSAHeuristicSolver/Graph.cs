@@ -38,7 +38,7 @@ namespace RSAHeuristicSolver
                 for (int j = 0; j < matrix.NetworkTopology.NetworkMatrix[i].Length; j++)
                     if (matrix.NetworkTopology.NetworkMatrix[i][j] > 0)
                     {
-                        Edge e = new Edge(matrix.NetworkTopology.NetworkMatrix[i][j], i, j);
+                        Edge e = new Edge(matrix.NetworkTopology.NetworkMatrix[i][j], i, j, matrix.SpatialResourcesCount);
                         dict.Add(key, e);
                         key++;
                     }
@@ -69,8 +69,8 @@ namespace RSAHeuristicSolver
             int cost = 0;
             foreach (var e in _edges)
             {
-                if (e.Value.SpectrumEdgeAllocator.SpectrumSize > cost)
-                    cost = e.Value.SpectrumEdgeAllocator.SpectrumSize;
+                if (e.Value.SpectrumEdgeAllocator.MaxSpectrumSize() > cost)
+                    cost = e.Value.SpectrumEdgeAllocator.MaxSpectrumSize();
             }
             return cost;
         }
@@ -98,12 +98,12 @@ namespace RSAHeuristicSolver
             get { return _spectrumEdgeAllocator; }
         }
 
-        public Edge(int edgeLength, int sourceNode, int destinationNode)
+        public Edge(int edgeLength, int sourceNode, int destinationNode, int spatialResourceCount)
         {
             _edgeLength = edgeLength;
             _sourceNode = sourceNode;
             _destinationNode = destinationNode;
-            _spectrumEdgeAllocator = new SpectrumEdgeAllocator();
+            _spectrumEdgeAllocator = new SpectrumEdgeAllocator(spatialResourceCount);
         }
     }
 

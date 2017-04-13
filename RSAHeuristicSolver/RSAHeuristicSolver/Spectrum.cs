@@ -10,55 +10,81 @@ namespace RSAHeuristicSolver
 {
     class SpectrumEdgeAllocator
     {
-        private List<int> _spatialResource;
-        private int _spectrumSize;
+        private List<SpatialResource> _spatialResources;
 
-        public int SpectrumSize
+
+        public int SpectrumSize(int id)
         {
-            get { return _spectrumSize; }
+            return _spatialResources[id].SpectrumSize;
         }
 
-        public SpectrumEdgeAllocator()
+        public int MaxSpectrumSize()
         {
-            _spatialResource = new List<int>();
-            _spectrumSize = 0;
+            return _spatialResources.Max(r => r.SpectrumSize);
         }
 
-        public bool IsFree(int firstSlice, int lastSlice)
+        public SpatialResource getSpatialResource(int id)
         {
-            while (_spatialResource.Count < lastSlice)
-                _spatialResource.Add(0);
+            return _spatialResources[id];
+        }
+
+        public SpectrumEdgeAllocator(int spatialResourcesCount)
+        {
+            _spatialResources = new List<SpatialResource>();
+            for (int i = 0; i< spatialResourcesCount; i++)
+                _spatialResources.Add(new SpatialResource());
+        }
+
+        public bool IsFree(int firstSlice, int lastSlice, SpatialResource spatialResource)
+        {
+            while (spatialResource.Slices.Count < lastSlice)
+                spatialResource.Slices.Add(0);
             for (int slice = firstSlice; slice < lastSlice; slice++)
-                if (_spatialResource[slice] == 1)
+                if (spatialResource.Slices[slice] == 1)
                     return false;
             return true;
         }
 
-        public void Allocate(int firstSlice, int lastSlice)
+        public void Allocate(int firstSlice, int lastSlice, SpatialResource spatialResource)
         {
-            if (IsFree(firstSlice, lastSlice))
+            if (IsFree(firstSlice, lastSlice, spatialResource))
             {
                 for (int slice = firstSlice; slice < lastSlice; slice++)
                 {
-                    _spatialResource[slice] = 1;
+                    spatialResource.Slices[slice] = 1;
                 }
-                _spectrumSize = lastSlice;
+                spatialResource.SpectrumSize = lastSlice;
             }
         }
 
-        public int GetFirstFreeSlice(int size)
+        public int GetFirstFreeSlice(int size, SpatialResource spatialResource)
         {
             int slice = 0;
-            for (slice = 0; slice <= _spatialResource.Count; slice++)
-                if (IsFree(slice, slice + _spectrumSize))
+            for (slice = 0; slice <= spatialResource.Slices.Count; slice++)
+                if (IsFree(slice, slice + spatialResource.SpectrumSize, spatialResource))
                     return slice;
             return 0;
         }
 
+        public SpatialResource GetBestSpatialResource()
+        {
+            int minSpec = _spatialResources[0].SpectrumSize;
+            SpatialResource bestResource = _spatialResources[0];
+            foreach (var s in _spatialResources)
+            {
+                if (s.SpectrumSize < minSpec)
+                {
+                    bestResource = s;
+                    minSpec = s.SpectrumSize;
+                }
+            }
+            return bestResource;
+        }
+
         public void Erase()
         {
-            _spatialResource.Clear();
-            _spectrumSize = 0;
+            foreach (var s in _spatialResources)
+                s.Clear();
         }
     }
 
@@ -71,17 +97,20 @@ namespace RSAHeuristicSolver
             _edges = edges;
         }
 
-        public int GetFirstFreeSpectrumOnPath(Path path) //First-Fit allocation
+        public SpatialResource GetFirstFreeSpectrumOnPath(Path path) //First-Fit allocation
         {
             int minFreeSliceNumber = 0;
             bool keepAllocating = true;
+            SpatialResource best = null;
             while (keepAllocating)
             {
                 keepAllocating = false;
                 foreach (int e in path.EdgesBelongingToPath)
                 {
                     Edge edge = _edges[e];
-                    int firstFreeSlice = edge.SpectrumEdgeAllocator.GetFirstFreeSlice(path.NumberOfSlices);
+                    //int firstFreeSlice = edge.SpectrumEdgeAllocator.GetFirstFreeSlice(path.NumberOfSlices, edge.SpectrumEdgeAllocator.GetFirstFreeSpatialResource());
+                    best = edge.SpectrumEdgeAllocator.GetBestSpatialResource();
+                    int firstFreeSlice = edge.SpectrumEdgeAllocator.GetFirstFreeSlice(path.NumberOfSlices, best);
                     if (firstFreeSlice > minFreeSliceNumber)
                     {
                         minFreeSliceNumber = firstFreeSlice;
@@ -89,18 +118,20 @@ namespace RSAHeuristicSolver
                     }
                 }
             }
-            return minFreeSliceNumber;
+            best.MinFreeSliceNumber = minFreeSliceNumber;
+            return best;
         }
 
         //allocated channel must be the same for each edge on a path
         public void AllocateFirstFreeSpectrumOnPath(Path path)
         {
             int spectrumSize = path.NumberOfSlices;
-            int firstSlice = GetFirstFreeSpectrumOnPath(path);
+            SpatialResource spatialResource = GetFirstFreeSpectrumOnPath(path);
+            int firstSlice = spatialResource.MinFreeSliceNumber;
             foreach (int e in path.EdgesBelongingToPath)
             {
                 Edge edge = _edges[e];
-                edge.SpectrumEdgeAllocator.Allocate(firstSlice, firstSlice + spectrumSize);
+                edge.SpectrumEdgeAllocator.Allocate(firstSlice, firstSlice + spectrumSize, spatialResource);
             }
         }
 
@@ -110,4 +141,25 @@ namespace RSAHeuristicSolver
                 e.Value.SpectrumEdgeAllocator.Erase();
         }
     }
+
+    class SpatialResource
+    {
+        public List<int> Slices;
+        public int SpectrumSize;
+        public int MinFreeSliceNumber;
+
+        public SpatialResource()
+        {
+            Slices = new List<int>();
+            SpectrumSize = 0;
+            MinFreeSliceNumber = 0;
+        }
+        public void Clear()
+        {
+            Slices.Clear();
+            SpectrumSize = 0;
+        }
+    }
+
 }
+
