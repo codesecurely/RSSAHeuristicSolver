@@ -45,8 +45,13 @@ namespace RSAHeuristicSolver
 
         public void SetNumberOfSlices(int demandVolume, double slizeSize)
         {
-            _numberOfSlices = (int) Math.Ceiling(demandVolume/(2*_modulationLevel*slizeSize));
+            //_numberOfSlices = (int) Math.Ceiling(demandVolume/(2*_modulationLevel*slizeSize));
+            int numberOfTranscievers = (int) Math.Ceiling((double) demandVolume / 50*_modulationLevel);
+            //int numberOfTranscievers = (demandVolume + 50*_modulationLevel - 1) / 50*_modulationLevel;
+            _numberOfSlices = 3*numberOfTranscievers + 1; // The guardband is defined as 1 slice of 12.5 GHz. Thus, the optical channels always have a width of (3t+1) slices in the spectral domain, where t denotes the number of transceivers utilized to transmit the OCs within given SpRc.
+
         }
+
     }
 }
 
@@ -81,6 +86,7 @@ class PathAllocator
                 if (_allCandidatePaths[i][j] == 1)
                     e.Add(j);
 
+            //every path in a demand is a different object so they can have different number of slices
             Path p = new Path(i, e, _lengths[i], _modulationLevels[i]);
             candidatePaths.Add(p);
         }

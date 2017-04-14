@@ -27,7 +27,7 @@ namespace RSAHeuristicSolver
 
             SimulatedAnnealing SA = new SimulatedAnnealing();
             GreedyHeuristic greedy = new GreedyHeuristic();
-            Parser parser = new Parser(4);
+            Parser parser = new Parser(1);
             parser.addScenarios(dir, scenarioFiles[0]);
             double avgEnergy = 0.0, avgTime = 0.0;
             foreach (var scenario in parser.ScenarioList)
