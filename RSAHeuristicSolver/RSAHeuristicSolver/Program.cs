@@ -10,18 +10,18 @@ namespace RSAHeuristicSolver
     {
         static void Main(string[] args)
         {
-            string dir = "C:\\EURO16_30Tbps_Avg";
+            string dir = "D:\\Dropbox\\politechnika\\mgr\\praca_mgr\\topologie\\Euro28";//"C:\\EURO16_30Tbps_Avg";
             double initialTemperature = 1000.0;
             double alpha = 0.99;
             double endTemperature = 0.01;
             string[] scenarioFiles =
             {
-                "euro16_k2.txt", "euro16_k3.txt", "euro16_k5.txt", "euro16_k10.txt",
+                "euro28.txt", "euro16_k3.txt", "euro16_k5.txt", "euro16_k10.txt",
                 "euro16_k30.txt"
             };
             string[] outputFiles =
             {
-                "c:\\k2alpha09.txt", "c:\\k3alpha09.txt", "c:\\k5alpha09.txt", "c:\\k10alpha09.txt",
+                "c:\\euro28.txt", "c:\\k3alpha09.txt", "c:\\k5alpha09.txt", "c:\\k10alpha09.txt",
                 "c:\\k30alpha09.txt"
             };
 
@@ -34,8 +34,10 @@ namespace RSAHeuristicSolver
             {
                 var comp = new DemandDistanceSorter();
                 greedy.Start(scenario, comp);
-                //SA.Start(initialTemperature, alpha, endTemperature, scenario);
-                string result = scenario.ScenarioName + " " + scenario.ObjectiveFunctionResult + " " + scenario.ElapsedAlgorithmTime;
+                string result = "Greedy: "+scenario.ScenarioName + " " + scenario.ObjectiveFunctionResult + " " + scenario.ElapsedAlgorithmTime;
+                Console.Write(result);
+                SA.Start(initialTemperature, alpha, endTemperature, scenario);
+                result = "SA: "+scenario.ScenarioName + " " + scenario.ObjectiveFunctionResult + " " + scenario.ElapsedAlgorithmTime;
                 Console.WriteLine(result);
                 avgEnergy += scenario.ObjectiveFunctionResult;
                 avgTime += scenario.ElapsedAlgorithmTime;

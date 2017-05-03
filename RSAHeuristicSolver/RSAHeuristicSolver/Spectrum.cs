@@ -63,7 +63,7 @@ namespace RSAHeuristicSolver
             for (slice = 0; slice <= spatialResource.Slices.Count; slice++)
                 if (IsFree(slice, slice + spatialResource.SpectrumSize, spatialResource))
                     return slice;
-            return 0;
+            return slice;
         }
 
         public SpatialResource GetBestSpatialResource()
@@ -131,6 +131,7 @@ namespace RSAHeuristicSolver
             foreach (int e in path.EdgesBelongingToPath)
             {
                 Edge edge = _edges[e];
+                //correct allocation on a path is guaraanted as the parameters don't change
                 edge.SpectrumEdgeAllocator.Allocate(firstSlice, firstSlice + spectrumSize, spatialResource);
             }
         }
