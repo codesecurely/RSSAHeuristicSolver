@@ -64,15 +64,33 @@ namespace RSAHeuristicSolver
             return dict;
         }
 
-        public int ComputeCost() //returns the highest allocated slot, which equals a sum of spectrum slices
+        public int GetHighestAllocatedSlot() //returns the highest allocated slot, which is the objective function
         {
-            int cost = 0;
+            int highestAllocatedSlot = 0;
             foreach (var e in _edges)
             {
-                if (e.Value.SpectrumEdgeAllocator.MaxSpectrumSize() > cost)
-                    cost = e.Value.SpectrumEdgeAllocator.MaxSpectrumSize();
+                if (e.Value.SpectrumEdgeAllocator.MaxSpectrumSize() > highestAllocatedSlot)
+                    highestAllocatedSlot = e.Value.SpectrumEdgeAllocator.MaxSpectrumSize();
             }
-            return cost;
+            return highestAllocatedSlot;
+        }
+
+        public int GetSumOfAllAllocatedSlots()
+        {
+            int sumOfAllAllocatedSlots = 0;
+            foreach (var e in _edges)
+                sumOfAllAllocatedSlots += e.Value.SpectrumEdgeAllocator.SpectrumSum();
+            return sumOfAllAllocatedSlots;
+        }
+        public double GetAverageMaxSpectrumSize() //returns average of max sizes of spectrum for every path and SpRc
+        {
+            double avgSpectrumSize = 0.0;
+            int div = _edges.Count;
+            foreach (var e in _edges)
+                avgSpectrumSize += e.Value.SpectrumEdgeAllocator.MaxSpectrumSize();
+
+            return avgSpectrumSize/div;
+
         }
     }
 

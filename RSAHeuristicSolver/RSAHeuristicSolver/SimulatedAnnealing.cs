@@ -32,7 +32,7 @@ namespace RSAHeuristicSolver
         }
 
 
-        public double Start(double initialTemperature, double alpha, double finalTemperature, Scenario scenario)
+        public DemandsVector Start(double initialTemperature, double alpha, double finalTemperature, Scenario scenario, bool nested = false)
         {
             _initialTemperature = initialTemperature;
             _currentTemperature = initialTemperature;
@@ -44,16 +44,24 @@ namespace RSAHeuristicSolver
             _nextEnergy = 0;
             _topologyGraph = new Graph(_scenario);
             _allocator = new SpectrumPathAllocator(_topologyGraph.Edges);
-            int iterations = 0;
+            int k = 1;
             var timer = new Stopwatch();
             double timeStart = 0.0;
             timer.Start();
             Random rnd = new Random();
             PathAllocator pathAllocator = new PathAllocator(_scenario, _topologyGraph.NumberOfNodes);
-            DemandsVector currentSolution = new DemandsVector(_scenario, pathAllocator);
-            currentSolution = createInitialSolution(currentSolution);
+            DemandsVector currentSolution;
+            if (nested)
+            {
+                currentSolution = new DemandsVector(Start(1000, 0.9, 0.01, scenario));
+            }
+            else
+            {
+                currentSolution = new DemandsVector(_scenario, pathAllocator);
+                currentSolution = createInitialSolution(currentSolution);
+            }
             allocateDemands(currentSolution);
-            _currentEnergy = _topologyGraph.ComputeCost();
+            _currentEnergy = _topologyGraph.GetHighestAllocatedSlot();
             int initialEnergy = _currentEnergy;
             DemandsVector bestSolution = new DemandsVector(currentSolution);
             _bestEnergy = _currentEnergy;
@@ -61,7 +69,7 @@ namespace RSAHeuristicSolver
             {
                 DemandsVector nextSolution = new DemandsVector(createNextSolution(currentSolution));
                 allocateDemands(nextSolution);
-                _nextEnergy = _topologyGraph.ComputeCost();
+                _nextEnergy = _topologyGraph.GetHighestAllocatedSlot();
                 if (_nextEnergy < _currentEnergy)
                 {
                     _currentEnergy = _nextEnergy;
@@ -78,14 +86,17 @@ namespace RSAHeuristicSolver
                     _currentEnergy = _nextEnergy;
                     currentSolution = new DemandsVector(nextSolution);
                 }
-                _currentTemperature = _currentTemperature*_alpha;
-                iterations++;
-                if (iterations > 10000) _currentTemperature = 0.0;
+                _currentTemperature = _initialTemperature*(Math.Pow(_alpha, k));
+                k++;
+                if (k > 10000) _currentTemperature = 0.0;
             }
             timer.Stop();
-            _scenario.ObjectiveFunctionResult = _bestEnergy;
-            _scenario.ElapsedAlgorithmTime = timer.ElapsedMilliseconds;
-            return timer.ElapsedMilliseconds;
+            if (!nested)
+            {
+                _scenario.ObjectiveFunctionResult = _bestEnergy;
+                _scenario.ElapsedAlgorithmTime = timer.ElapsedMilliseconds;
+            }
+            return bestSolution;
         }
         private double computeProbablity()
         {

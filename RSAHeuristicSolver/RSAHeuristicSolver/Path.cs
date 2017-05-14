@@ -51,8 +51,7 @@ namespace RSAHeuristicSolver
             else if (_pathLength > 1200) _modulationLevel = 2;
             else if (_pathLength > 600) _modulationLevel = 3;
             else _modulationLevel = 4;
-                int numberOfTranscievers = (int) Math.Ceiling((double) demandVolume / 50*_modulationLevel);
-            //int numberOfTranscievers = (demandVolume + 50*_modulationLevel - 1) / 50*_modulationLevel;
+            int numberOfTranscievers = (int) Math.Ceiling((double) demandVolume / 50*_modulationLevel);
             _numberOfSlices = 3*numberOfTranscievers + 1; // The guardband is defined as 1 slice of 12.5 GHz. Thus, the optical channels always have a width of (3t+1) slices in the spectral domain, where t denotes the number of transceivers utilized to transmit the OCs within given SpRc.
 
         }

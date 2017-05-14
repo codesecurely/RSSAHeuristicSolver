@@ -23,7 +23,7 @@ namespace RSAHeuristicSolver
             currentSolution.Demands.Sort(comparator);
             allocateDemands(currentSolution);
             timer.Stop();
-            _scenario.ObjectiveFunctionResult = _topologyGraph.ComputeCost();
+            _scenario.ObjectiveFunctionResult = _topologyGraph.GetHighestAllocatedSlot();
             _scenario.ElapsedAlgorithmTime = timer.ElapsedMilliseconds;
             return timer.ElapsedMilliseconds;
         }

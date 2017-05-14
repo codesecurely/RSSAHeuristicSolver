@@ -35,7 +35,7 @@ namespace RSAHeuristicSolver
             DemandsVector currentSolution = new DemandsVector(_scenario, pathAllocator);
             currentSolution = createInitialSolution(currentSolution);
             allocateDemands(currentSolution);
-            _currentFitness = _topologyGraph.ComputeCost();
+            _currentFitness = _topologyGraph.GetHighestAllocatedSlot();
 
             timer.Stop();
             _scenario.ObjectiveFunctionResult = _bestFitness;

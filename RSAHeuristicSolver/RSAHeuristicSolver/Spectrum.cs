@@ -23,6 +23,14 @@ namespace RSAHeuristicSolver
             return _spatialResources.Max(r => r.SpectrumSize);
         }
 
+        public int SpectrumSum()
+        {
+            int sum = 0;
+            foreach (var s in _spatialResources)
+                sum += s.SpectrumSize;
+            return sum;
+        }
+
         public SpatialResource getSpatialResource(int id)
         {
             return _spatialResources[id];
@@ -70,6 +78,7 @@ namespace RSAHeuristicSolver
         {
             int minSpec = _spatialResources[0].SpectrumSize;
             SpatialResource bestResource = _spatialResources[0];
+            //we iterate over all SpRc and pick the one with the least allocated spectrum
             foreach (var s in _spatialResources)
             {
                 if (s.SpectrumSize < minSpec)

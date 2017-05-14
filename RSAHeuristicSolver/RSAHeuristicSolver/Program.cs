@@ -12,7 +12,7 @@ namespace RSAHeuristicSolver
         {
             string dir = "D:\\Dropbox\\politechnika\\mgr\\praca_mgr\\topologie\\Euro28";//"C:\\EURO16_30Tbps_Avg";
             double initialTemperature = 1000.0;
-            double alpha = 0.99;
+            double alpha = 0.9;
             double endTemperature = 0.01;
             string[] scenarioFiles =
             {
@@ -30,17 +30,20 @@ namespace RSAHeuristicSolver
             Parser parser = new Parser(1);
             parser.addScenarios(dir, scenarioFiles[0]);
             double avgEnergy = 0.0, avgTime = 0.0;
-            foreach (var scenario in parser.ScenarioList)
+            while (true)
             {
-                var comp = new DemandDistanceSorter();
-                greedy.Start(scenario, comp);
-                string result = "Greedy: "+scenario.ScenarioName + " " + scenario.ObjectiveFunctionResult + " " + scenario.ElapsedAlgorithmTime;
-                Console.Write(result);
-                SA.Start(initialTemperature, alpha, endTemperature, scenario);
-                result = "SA: "+scenario.ScenarioName + " " + scenario.ObjectiveFunctionResult + " " + scenario.ElapsedAlgorithmTime;
-                Console.WriteLine(result);
-                avgEnergy += scenario.ObjectiveFunctionResult;
-                avgTime += scenario.ElapsedAlgorithmTime;
+                foreach (var scenario in parser.ScenarioList)
+                {
+                    var comp = new DemandDistanceSorter();
+                    greedy.Start(scenario, comp);
+                    string result = "Greedy: " + scenario.ScenarioName + " " + scenario.ObjectiveFunctionResult + " " + scenario.ElapsedAlgorithmTime;
+                    Console.Write(result);
+                    SA.Start(initialTemperature, alpha, endTemperature, scenario, true);
+                    result = " SA: " + scenario.ScenarioName + " " + scenario.ObjectiveFunctionResult + " " + scenario.ElapsedAlgorithmTime;
+                    Console.WriteLine(result);
+                    avgEnergy += scenario.ObjectiveFunctionResult;
+                    avgTime += scenario.ElapsedAlgorithmTime;
+                }
             }
             /*for (int i = 0; i < 5; i++)
             {
