@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="RSAHeuristicSolver.ChartGenerator" Collapsed="true">
+    <Position X="13" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ChartGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.Demand" Collapsed="true">
+    <Position X="1.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAQAACAAAAAAAAAAARAQAAAAAKgAAAAA=</HashCode>
+      <FileName>Demand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.UnicastDemand" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAIAAAAAAgACQAAgIACALAACAAA=</HashCode>
+      <FileName>Demand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.AnycastDemand" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAKIAAAAAAAACAQFCIAAAAAgQQAAQQIAAAAAKEAAACA=</HashCode>
+      <FileName>Demand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.DemandsVector" Collapsed="true">
+    <Position X="9.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAgAAAAAAAAAhAAAQAAAAAAEAAAAAgAAA=</HashCode>
+      <FileName>Demand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.DemandDistanceSorter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>DemandDistanceSorter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RSAHeuristicSolver.Graph" Collapsed="true">
+    <Position X="13" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgDAgAAIAAAAAAABBAAAAIAAAAAAAAAAAGAAAAAA=</HashCode>
+      <FileName>Graph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.Edge" Collapsed="true">
+    <Position X="11.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAACAAAAAAAAAAAAAiAAgAgAAI=</HashCode>
+      <FileName>Graph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.Node" Collapsed="true">
+    <Position X="9.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Graph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.GreedyHeuristic" Collapsed="true">
+    <Position X="3" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GreedyHeuristic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.HeuristicAlgorithm" Collapsed="true">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAABAABAAAAAAAAAAQAAAAIAAAAAEAAAAAQAAA=</HashCode>
+      <FileName>HeuristicAlgorithm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.IListExtensions" Collapsed="true">
+    <Position X="14.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>IListExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.NetworkTopologyParser" Collapsed="true">
+    <Position X="7.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAIAABAAAIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Parser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.UnicastDemandsParser" Collapsed="true">
+    <Position X="11.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAIAAAAQAAAAAAAAAACAAgAAAAA=</HashCode>
+      <FileName>Parser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.UnicastDemandData" Collapsed="true">
+    <Position X="9.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAIAAAAAAAAAAACAAgAgAAI=</HashCode>
+      <FileName>Parser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.AnycastDemandsParser" Collapsed="true">
+    <Position X="9.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAACQACAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Parser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.AnycastDemandData" Collapsed="true">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AASAAAAAAAAAACQAAAAQAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Parser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.CandidatePathsParser" Collapsed="true">
+    <Position X="11.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQQAAAAAAAAAAAAAAAQAAQAAAAAAAAA=</HashCode>
+      <FileName>Parser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.PathLengthParser" Collapsed="true">
+    <Position X="7.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAJAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Parser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.DataCentersParser" Collapsed="true">
+    <Position X="14.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAQQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Parser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.Scenario" Collapsed="true">
+    <Position X="11.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAgAAABAA0QAEQABABEgAgAIAAASACQAAAIAAAAA=</HashCode>
+      <FileName>Parser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.Parser" Collapsed="true">
+    <Position X="11.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAwQAEABAABAgAABAAAAAAAQAAAAIgAAA=</HashCode>
+      <FileName>Parser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.Path" Collapsed="true">
+    <Position X="13" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAQABAAAAgAAAEAAAAAAABAAAQAAAAAAAAAAEgAAI=</HashCode>
+      <FileName>Path.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.PathAllocator" Collapsed="true">
+    <Position X="14.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAQAAAAQAAAABACSAAAAAAAAA=</HashCode>
+      <FileName>Path.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.Program" Collapsed="true">
+    <Position X="9.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.SimulatedAnnealing" Collapsed="true">
+    <Position X="0.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQCAAACAAAAAEQAAAAAQAAACAAiAAAAAAAAAAAAA=</HashCode>
+      <FileName>SimulatedAnnealing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.SpectrumEdgeAllocator" Collapsed="true">
+    <Position X="14.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>SAAgAAAEgAAgAFAAAACAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Spectrum.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.SpectrumPathAllocator" Collapsed="true">
+    <Position X="7.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAABAAAAACAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Spectrum.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.SpatialResource" Collapsed="true">
+    <Position X="13" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAQAAAAAADAAAA=</HashCode>
+      <FileName>Spectrum.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSAHeuristicSolver.TabuSearch" Collapsed="true">
+    <Position X="5.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQBAAACEAIAAAQAAAAAACAACAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>TabuSearch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="RSAHeuristicSolver.Move" Collapsed="true">
+    <Position X="7.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAEAAAA=</HashCode>
+      <FileName>TabuSearch.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

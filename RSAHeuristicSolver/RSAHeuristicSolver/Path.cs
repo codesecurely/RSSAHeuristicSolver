@@ -57,53 +57,54 @@ namespace RSAHeuristicSolver
         }
 
     }
-}
 
-class PathAllocator
-{
-    private int[][] _allCandidatePaths;
-    private int _k;
-    private int _numberOfnodes;
-    private int[] _modulationLevels;
-    private int[] _lengths;
-
-    public PathAllocator(Scenario paths, int numberOfNodes)
+    class PathAllocator
     {
-        _k = paths.K;
-        _numberOfnodes = numberOfNodes;
-        _allCandidatePaths = paths.CandidatePaths.CandidatePaths;
-        _modulationLevels = paths.PathLengths.ModulationLevel;
-        _lengths = paths.PathLengths.PathLength;
-    }
+        private int[][] _allCandidatePaths;
+        private int _k;
+        private int _numberOfnodes;
+        private int[] _modulationLevels;
+        private int[] _lengths;
 
-    public List<Path> GetCandidatePaths(int sourceNode, int destinationNode) //for a given demand
-    {
-        Debug.Assert(!(sourceNode > _numberOfnodes - 1 || destinationNode > _numberOfnodes - 1),
-            "Node number out of bounds");
-        List<Path> candidatePaths = new List<Path>();
-        int first = GetFirstIndex(sourceNode, destinationNode);
-        int last = first + _k;
-        for (int i = first; i < last; i++)
+        public PathAllocator(Scenario paths, int numberOfNodes)
         {
-            List<int> e = new List<int>();
-            for (int j = 0; j < _allCandidatePaths[i].Length; j++)
-                if (_allCandidatePaths[i][j] == 1)
-                    e.Add(j);
-
-            //every path in a demand is a different object so they can have different number of slices
-            Path p = new Path(i, e, _lengths[i], _modulationLevels[i]);
-            candidatePaths.Add(p);
+            _k = paths.K;
+            _numberOfnodes = numberOfNodes;
+            _allCandidatePaths = paths.CandidatePaths.CandidatePaths;
+            _modulationLevels = paths.PathLengths.ModulationLevel;
+            _lengths = paths.PathLengths.PathLength;
         }
-        return candidatePaths;
-    }
 
-    private int GetFirstIndex(int sourceNode, int destinationNode)
-    {
-        int srcIndex = sourceNode * _k * (_numberOfnodes - 1);
-        int dstIndex = destinationNode * _k;
-        if (destinationNode > sourceNode)
-            dstIndex -= _k;
-        int index = srcIndex + dstIndex;
-        return index;
+        public List<Path> GetCandidatePaths(int sourceNode, int destinationNode) //for a given demand
+        {
+            Debug.Assert(!(sourceNode > _numberOfnodes - 1 || destinationNode > _numberOfnodes - 1),
+                "Node number out of bounds");
+            List<Path> candidatePaths = new List<Path>();
+            int first = GetFirstIndex(sourceNode, destinationNode);
+            int last = first + _k;
+            for (int i = first; i < last; i++)
+            {
+                List<int> e = new List<int>();
+                for (int j = 0; j < _allCandidatePaths[i].Length; j++)
+                    if (_allCandidatePaths[i][j] == 1)
+                        e.Add(j);
+
+                //every path in a demand is a different object so they can have different number of slices
+                Path p = new Path(i, e, _lengths[i], _modulationLevels[i]);
+                candidatePaths.Add(p);
+            }
+            return candidatePaths;
+        }
+
+        private int GetFirstIndex(int sourceNode, int destinationNode)
+        {
+            int srcIndex = sourceNode * _k * (_numberOfnodes - 1);
+            int dstIndex = destinationNode * _k;
+            if (destinationNode > sourceNode)
+                dstIndex -= _k;
+            int index = srcIndex + dstIndex;
+            return index;
+        }
     }
 }
+

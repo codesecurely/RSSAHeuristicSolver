@@ -10,6 +10,8 @@ namespace RSAHeuristicSolver
     {
         static void Main(string[] args)
         {
+            //ChartGenerator c = new ChartGenerator();
+            //c.TestChart();
             string dir = "D:\\Dropbox\\politechnika\\mgr\\praca_mgr\\topologie\\Euro28";//"C:\\EURO16_30Tbps_Avg";
             double initialTemperature = 1000.0;
             double alpha = 0.9;
@@ -27,7 +29,7 @@ namespace RSAHeuristicSolver
 
             SimulatedAnnealing SA = new SimulatedAnnealing();
             GreedyHeuristic greedy = new GreedyHeuristic();
-            Parser parser = new Parser(1);
+            Parser parser = new Parser();
             parser.addScenarios(dir, scenarioFiles[0]);
             double avgEnergy = 0.0, avgTime = 0.0;
             while (true)
