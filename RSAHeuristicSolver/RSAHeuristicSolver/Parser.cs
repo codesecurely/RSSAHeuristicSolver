@@ -253,7 +253,7 @@ namespace RSAHeuristicSolver
 
     class Scenario
     {
-        private string _scenarioName;
+        private string _name;
         private NetworkTopologyParser _networkTopology;
         private UnicastDemandsParser _unicastDemands;
         private AnycastDemandsParser _anycastDemands;
@@ -263,6 +263,8 @@ namespace RSAHeuristicSolver
         private int _k;
         private double _elapsedAlgorithmTime;
         private int _objectiveFunctionResult; //highest slice number
+        private int _sumOfAllSlices; 
+        private double _averageSliceCountForEachPathAndSpRc; //highest slice number
         private int _spatialResourcesCount;
 
         public int SpatialResourcesCount
@@ -319,14 +321,40 @@ namespace RSAHeuristicSolver
             set { _objectiveFunctionResult = value; }
         }
 
-        public string ScenarioName
+        public string Name
         {
-            get { return _scenarioName; }
+            get { return _name; }
+        }
+
+        public double AverageSliceCountForEachPathAndSpRc
+        {
+            get
+            {
+                return _averageSliceCountForEachPathAndSpRc;
+            }
+
+            set
+            {
+                _averageSliceCountForEachPathAndSpRc = value;
+            }
+        }
+
+        public int SumOfAllSlices
+        {
+            get
+            {
+                return _sumOfAllSlices;
+            }
+
+            set
+            {
+                _sumOfAllSlices = value;
+            }
         }
 
         public Scenario(string scenario, string path)
         {
-            _scenarioName = scenario;
+            _name = scenario;
             _spatialResourcesCount = Convert.ToInt32(scenario.Substring(11, 2));
             _k = Convert.ToInt32(scenario.Substring(7, 2));
             var dict = new Dictionary<string, string>(MakeDictOfFiles(scenario, path));

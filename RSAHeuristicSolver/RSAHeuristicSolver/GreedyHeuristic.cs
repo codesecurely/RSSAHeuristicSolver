@@ -24,6 +24,8 @@ namespace RSAHeuristicSolver
             allocateDemands(currentSolution);
             timer.Stop();
             _scenario.ObjectiveFunctionResult = _topologyGraph.GetHighestAllocatedSlot();
+            _scenario.SumOfAllSlices = _topologyGraph.GetSumOfAllAllocatedSlots();
+            _scenario.AverageSliceCountForEachPathAndSpRc = _topologyGraph.GetAverageMaxSpectrumSize();
             _scenario.ElapsedAlgorithmTime = timer.ElapsedMilliseconds;
             return timer.ElapsedMilliseconds;
         }

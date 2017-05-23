@@ -94,6 +94,8 @@ namespace RSAHeuristicSolver
             if (!nested)
             {
                 _scenario.ObjectiveFunctionResult = _bestEnergy;
+                _scenario.SumOfAllSlices = _topologyGraph.GetSumOfAllAllocatedSlots();
+                _scenario.AverageSliceCountForEachPathAndSpRc = _topologyGraph.GetAverageMaxSpectrumSize();
                 _scenario.ElapsedAlgorithmTime = timer.ElapsedMilliseconds;
             }
             return bestSolution;
