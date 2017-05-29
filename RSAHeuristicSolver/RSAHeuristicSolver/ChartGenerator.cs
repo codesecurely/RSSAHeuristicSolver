@@ -105,6 +105,7 @@ namespace RSAHeuristicSolver
 
 
             var chartArea = new ChartArea();
+
             chartArea.Name = "Wykres";
             chartArea.AxisX.LabelStyle.Format = "F";
             chartArea.AxisX.MajorGrid.LineColor = Color.LightGray;
@@ -124,12 +125,14 @@ namespace RSAHeuristicSolver
             chart.ChartAreas.Add(chartArea);
 
             var greedy = new Series();
+            //greedy.IsValueShownAsLabel = true;
             greedy.Name = "Greedy";
             greedy.ChartType = SeriesChartType.Bar;
             greedy.XValueType = ChartValueType.Auto;
             chart.Series.Add(greedy);
 
             var SA = new Series();
+            //SA.IsValueShownAsLabel = true;
             SA.Name = "SA";
             SA.ChartType = SeriesChartType.Bar;
             SA.XValueType = ChartValueType.Auto;

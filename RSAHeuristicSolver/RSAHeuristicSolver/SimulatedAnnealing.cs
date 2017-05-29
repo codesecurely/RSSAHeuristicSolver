@@ -32,7 +32,8 @@ namespace RSAHeuristicSolver
         }
 
 
-        public DemandsVector Start(double initialTemperature, double alpha, double finalTemperature, Scenario scenario, bool nested = false)
+        public DemandsVector Start(double initialTemperature, double alpha, double finalTemperature, Scenario scenario,
+            bool nested = false)
         {
             _initialTemperature = initialTemperature;
             _currentTemperature = initialTemperature;
@@ -51,14 +52,14 @@ namespace RSAHeuristicSolver
             Random rnd = new Random();
             PathAllocator pathAllocator = new PathAllocator(_scenario, _topologyGraph.NumberOfNodes);
             DemandsVector currentSolution;
+
+            currentSolution = new DemandsVector(_scenario, pathAllocator);
+            currentSolution = createInitialSolution(currentSolution);
+            //use another SA to generate an initial solution
             if (nested)
             {
-                currentSolution = new DemandsVector(Start(1000, 0.9, 0.01, scenario));
-            }
-            else
-            {
-                currentSolution = new DemandsVector(_scenario, pathAllocator);
-                currentSolution = createInitialSolution(currentSolution);
+                var nestedSA = new SimulatedAnnealing();
+                currentSolution = nestedSA.Start(1000, 0.9, 0.001, scenario);
             }
             allocateDemands(currentSolution);
             _currentEnergy = _topologyGraph.GetHighestAllocatedSlot();
@@ -86,23 +87,28 @@ namespace RSAHeuristicSolver
                     _currentEnergy = _nextEnergy;
                     currentSolution = new DemandsVector(nextSolution);
                 }
-                _currentTemperature = _initialTemperature*(Math.Pow(_alpha, k));
+                _currentTemperature = coolExponentially(k);
+                //Console.WriteLine(_currentTemperature);
                 k++;
-                if (k > 10000) _currentTemperature = 0.0;
+                //if (k > 10000) _currentTemperature = 0.0;
             }
             timer.Stop();
-            if (!nested)
-            {
-                _scenario.ObjectiveFunctionResult = _bestEnergy;
-                _scenario.SumOfAllSlices = _topologyGraph.GetSumOfAllAllocatedSlots();
-                _scenario.AverageSliceCountForEachPathAndSpRc = _topologyGraph.GetAverageMaxSpectrumSize();
-                _scenario.ElapsedAlgorithmTime = timer.ElapsedMilliseconds;
-            }
+
+            _scenario.ObjectiveFunctionResult = _bestEnergy;
+            _scenario.SumOfAllSlices = _topologyGraph.GetSumOfAllAllocatedSlots();
+            _scenario.AverageSliceCountForEachPathAndSpRc = _topologyGraph.GetAverageMaxSpectrumSize();
+            _scenario.ElapsedAlgorithmTime = timer.ElapsedMilliseconds;
             return bestSolution;
         }
+
         private double computeProbablity()
         {
             return Math.Exp(-(_nextEnergy - _currentEnergy)/_currentTemperature);
+        }
+
+        private double coolExponentially(int k)
+        {
+            return _initialTemperature*(Math.Pow(_alpha, k));
         }
     }
 }
