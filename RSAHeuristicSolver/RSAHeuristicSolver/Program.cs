@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -40,6 +41,8 @@ namespace RSAHeuristicSolver
             string[] scenarioFiles = s;
             string[] labels = l;
             string[] outputFiles = o;
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
             List<ResultHelper> greedyResultHelper = new List<ResultHelper>();
             List<ResultHelper> SAResultHelper = new List<ResultHelper>();
             List<string> avgsGreedyToFile = new List<string>();
@@ -119,10 +122,10 @@ namespace RSAHeuristicSolver
                 SAResultHelper.Add(new ResultHelper(list, labels[index], avgsSA[0]/div, avgsSA[1]/div, avgsSA[2]/div,
                     avgsSA[3]/div));
                 file.Close();
-                string greedyavgs = avgsGreedy[0]/div + "\t" + avgsGreedy[1]/div + "\t" + avgsGreedy[2]/div + "\t" +
-                                    avgsGreedy[3]/div;
-                string SAavgs = avgsSA[0]/div + "\t" + avgsSA[1]/div + "\t" + avgsSA[2]/div + "\t" +
-                                avgsSA[3]/div;
+                string greedyavgs = (avgsGreedy[0]/div).ToString(nfi) + "\t" + (avgsGreedy[1]/div/1000).ToString(nfi) + "\t" + (avgsGreedy[2]/div).ToString(nfi) + "\t" +
+                                    (avgsGreedy[3]/div).ToString(nfi);
+                string SAavgs = (avgsSA[0]/div).ToString(nfi) + "\t" + (avgsSA[1]/div/1000).ToString(nfi) + "\t" + (avgsSA[2]/div).ToString(nfi) + "\t" +
+                                (avgsSA[3]/div).ToString(nfi);
                 File.AppendAllLines(topologyPathFile + outputFiles[index], greedyResults);
                 File.AppendAllLines(topologyPathFile + outputFiles[index], saResults);
                 File.AppendAllText(topologyPathFile + outputFiles[index], "Gavg: " + greedyavgs + "\n");
@@ -138,158 +141,6 @@ namespace RSAHeuristicSolver
             c.GenerateChart(SAResultHelper, greedyResultHelper, topology + "sum", "sum", xaxis);
         }
 
-        /*public void TestForK(string topologyPathFile, string topology, int repeat, double t, double a, string[] s, string[] l, string[] o)
-        {
-            string dir = topologyPathFile; //"C:\\EURO16_30Tbps_Avg";
-            double initialTemperature = t;
-            double alpha = a;
-            double endTemperature = 0.001;
-            string[] scenarioFiles = s;
-            string[] outputFiles = o;
-            string[] labels = l;
-            List<ResultHelper> from50To1000GbpsGreedy = new List<ResultHelper>();
-            List<ResultHelper> from50To1000GbpsSA = new List<ResultHelper>();
-            SimulatedAnnealing SA = new SimulatedAnnealing();
-            GreedyHeuristic greedy = new GreedyHeuristic();
-            Parser parser = new Parser();
-            parser.addScenarios(dir, scenarioFiles[0]);
-            double avgEnergy = 0.0, avgTime = 0.0, avgSum = 0.0, avgAvg = 0.0;
-            System.IO.StreamWriter file = new System.IO.StreamWriter(outputFiles[0]);
-            string fileHeader = "Name, avgEnergy, avgSum, avgAvg, avgTime";
-            file.WriteLine(fileHeader);
-            foreach (var scenario in parser.ScenarioList)
-            {
-                avgEnergy = 0.0;
-                avgTime = 0.0;
-                avgSum = 0.0;
-                avgAvg = 0.0;
-                var comp = new DemandDistanceSorter();
-                greedy.Start(scenario, comp);
-                int n = 10;
-                string g = scenario.Name + " Fmin: " + scenario.ObjectiveFunctionResult + " Sum: " +
-                           scenario.SumOfAllSlices + " Avg: " +
-                           scenario.AverageSliceCountForEachPathAndSpRc.ToString("F2") + " Time:" +
-                           scenario.ElapsedAlgorithmTime;
-                string result = "Greedy: " + g;
-                ResultHelper resultGreedy = new ResultHelper(scenario.Name, "", scenario.ObjectiveFunctionResult,
-                    scenario.ElapsedAlgorithmTime, scenario.SumOfAllSlices, scenario.AverageSliceCountForEachPathAndSpRc);
-                resultGreedy.Label = scenario.K.ToString();
-                from50To1000GbpsGreedy.Add(resultGreedy);
-                Console.WriteLine("{0,0}{1,10}", "Greedy: ", g);
-                for (int i = 0; i < n; i++)
-                {
-                    SA.Start(initialTemperature, alpha, endTemperature, scenario, true);
-                    avgEnergy += scenario.ObjectiveFunctionResult;
-                    avgTime += scenario.ElapsedAlgorithmTime;
-                    avgSum += scenario.SumOfAllSlices;
-                    avgAvg += scenario.AverageSliceCountForEachPathAndSpRc;
-                }
-                avgEnergy /= n;
-                avgTime /= n;
-                avgSum /= n;
-                avgAvg /= n;
-
-                string fileResult = scenario.Name + " " + avgEnergy + " " + avgSum + " " + avgAvg + " " +
-                                    avgTime;
-                file.WriteLine(fileResult);
-                ResultHelper resultSA = new ResultHelper(scenario.Name, "", avgEnergy, avgTime, avgSum, avgAvg);
-                resultSA.Label = scenario.K.ToString();
-                from50To1000GbpsSA.Add(resultSA);
-                string sa = scenario.Name + " Fmin: " + avgEnergy + " Sum: " +
-                            avgSum + " Avg: " +
-                            avgAvg + " Time:" +
-                            avgTime;
-                result = "SA: " + sa;
-                Console.WriteLine("{0,0}{1,15}", "SA: ", sa);
-                Console.WriteLine("----------");
-            }
-            file.Close();
-            ChartGenerator c = new ChartGenerator();
-            c.GenerateChart(from50To1000GbpsSA, from50To1000GbpsGreedy, "energy_k", "energy",
-                "Liczba ścieżek kandydujących");
-            c.GenerateChart(from50To1000GbpsSA, from50To1000GbpsGreedy, "avg_k", "avg", "Liczba ścieżek kandydujących");
-            c.GenerateChart(from50To1000GbpsSA, from50To1000GbpsGreedy, "sum_k", "sum", "Liczba ścieżek kandydujących");
-        }
-        */
-        /*public void TestForSpRc()
-        {
-            string dir = "D:\\Dropbox\\politechnika\\mgr\\praca_mgr\\topologie\\Euro28"; //"C:\\EURO16_30Tbps_Avg";
-            double initialTemperature = 1000.0;
-            double alpha = 0.99;
-            double endTemperature = 0.001;
-            string[] scenarioFiles =
-            {
-                "euro28_diff_sprc.txt", "euro16_k3.txt", "euro16_k5.txt", "euro16_k10.txt",
-                "euro16_k30.txt"
-            };
-            string[] outputFiles =
-            {
-                "c:\\euro28_diff_sprc.txt", "c:\\k3alpha09.txt", "c:\\k5alpha09.txt", "c:\\k10alpha09.txt",
-                "c:\\k30alpha09.txt"
-            };
-            List<ResultHelper> from50To1000GbpsGreedy = new List<ResultHelper>();
-            List<ResultHelper> from50To1000GbpsSA = new List<ResultHelper>();
-            SimulatedAnnealing SA = new SimulatedAnnealing();
-            GreedyHeuristic greedy = new GreedyHeuristic();
-            Parser parser = new Parser();
-            parser.addScenarios(dir, scenarioFiles[0]);
-            double avgEnergy = 0.0, avgTime = 0.0, avgSum = 0.0, avgAvg = 0.0;
-            System.IO.StreamWriter file = new System.IO.StreamWriter(outputFiles[0]);
-            string fileHeader = "Name, avgEnergy, avgSum, avgAvg, avgTime";
-            file.WriteLine(fileHeader);
-            foreach (var scenario in parser.ScenarioList)
-            {
-                avgEnergy = 0.0;
-                avgTime = 0.0;
-                avgSum = 0.0;
-                avgAvg = 0.0;
-                var comp = new DemandDistanceSorter();
-                greedy.Start(scenario, comp);
-                int n = 10;
-                string g = scenario.Name + " Fmin: " + scenario.ObjectiveFunctionResult + " Sum: " +
-                           scenario.SumOfAllSlices + " Avg: " +
-                           scenario.AverageSliceCountForEachPathAndSpRc.ToString("F2") + " Time:" +
-                           scenario.ElapsedAlgorithmTime;
-                string result = "Greedy: " + g;
-                ResultHelper resultGreedy = new ResultHelper(scenario.Name, "", scenario.ObjectiveFunctionResult,
-                    scenario.ElapsedAlgorithmTime, scenario.SumOfAllSlices, scenario.AverageSliceCountForEachPathAndSpRc);
-                resultGreedy.Label = scenario.Name.Substring(11, 2);
-                from50To1000GbpsGreedy.Add(resultGreedy);
-                Console.WriteLine("{0,0}{1,10}", "Greedy: ", g);
-                for (int i = 0; i < n; i++)
-                {
-                    SA.Start(initialTemperature, alpha, endTemperature, scenario, true);
-                    avgEnergy += scenario.ObjectiveFunctionResult;
-                    avgTime += scenario.ElapsedAlgorithmTime;
-                    avgSum += scenario.SumOfAllSlices;
-                    avgAvg += scenario.AverageSliceCountForEachPathAndSpRc;
-                }
-                avgEnergy /= n;
-                avgTime /= n;
-                avgSum /= n;
-                avgAvg /= n;
-
-                string fileResult = scenario.Name + " " + avgEnergy + " " + avgSum + " " + avgAvg + " " +
-                                    avgTime;
-                file.WriteLine(fileResult);
-                ResultHelper resultSA = new ResultHelper(scenario.Name, "", avgEnergy, avgTime, avgSum, avgAvg);
-                resultSA.Label = Int32.Parse(scenario.Name.Substring(11, 2)).ToString();
-                from50To1000GbpsSA.Add(resultSA);
-                string sa = scenario.Name + " Fmin: " + avgEnergy + " Sum: " +
-                            avgSum + " Avg: " +
-                            avgAvg + " Time:" +
-                            avgTime;
-                result = "SA: " + sa;
-                Console.WriteLine("{0,0}{1,15}", "SA: ", sa);
-                Console.WriteLine("----------");
-            }
-            file.Close();
-            ChartGenerator c = new ChartGenerator();
-            c.GenerateChart(from50To1000GbpsSA, from50To1000GbpsGreedy, "energy_sprc", "energy",
-                "Liczba zasobów przestrzennych");
-            c.GenerateChart(from50To1000GbpsSA, from50To1000GbpsGreedy, "avg_sprc", "avg", "Liczba zasobów przestrzennych");
-            c.GenerateChart(from50To1000GbpsSA, from50To1000GbpsGreedy, "sum_sprc", "sum", "Liczba zasobów przestrzennych");
-        }*/
 
         public void Tuning(int repeat)
         {
@@ -365,6 +216,20 @@ namespace RSAHeuristicSolver
         {
             Tester t = new Tester();
             //t.TestForK();
+            string[] scenarioFilesDT14From50To1000 =
+{
+                "dt14-1.txt", "dt14-2.txt", "dt14-3.txt"
+            };
+
+            string[] scenarioFilesEuro28From50To1000 =
+{
+                "euro28-1.txt", "euro28-2.txt", "euro28-3.txt"
+            };
+
+            string[] outputFilesEuro28From50To1000 =
+{
+                "euro28-1-res.txt", "euro28-2-res.txt", "euro28-3-res.txt"
+            };
             string[] scenarioFilesDT14SpRc =
             {
                 "dt14-s1.txt", "dt14-s2.txt", "dt14-s3.txt", "dt14-s4.txt", "dt14-s5.txt",
@@ -385,6 +250,11 @@ namespace RSAHeuristicSolver
             };
             string[] labelsSpRc = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
             string[] labelsK = {"2", "3", "5", "10"};
+            string[] labelsFrom50To1000 = { "50-1000 Gbps", "500 Gbps", "1 Tbps" };
+            string[] outputFilesDT14From50To1000 =
+{
+               "dt14-1-res.txt", "dt14-2-res.txt", "dt14-3-res.txt"
+            };
             string[] outputFilesDT14SpRc =
             {
                 "dt14-s1-res.txt", "dt14-s2-res.txt", "dt14-s3-res.txt", "dt14-s4-res.txt", "dt14-s5-res.txt",
@@ -405,11 +275,15 @@ namespace RSAHeuristicSolver
             };
 
             //t.TestFrom50to1000("D:\\Dropbox\\politechnika\\mgr\\praca_mgr\\topologie\\DT14", "DT14", 10, 1000.0, 0.99, scenarioFiles, labels, outputFiles);
-            t.PerformTests("D:\\Dropbox\\politechnika\\mgr\\praca_mgr\\topologie\\DT14", "DT14-sprc", 10, 1000.0, 0.99,
-                scenarioFilesDT14SpRc, labelsSpRc, outputFilesDT14SpRc, "Liczba zasobów przestrzennych");
-            t.PerformTests("D:\\Dropbox\\politechnika\\mgr\\praca_mgr\\topologie\\DT14", "DT14-k", 10, 1000.0, 0.99,
-                scenarioFilesDT14K, labelsK, outputFilesDT14K, "Liczba ścieżek kandydujących");
-            //t.TestFrom50to1000("D:\\Dropbox\\politechnika\\mgr\\praca_mgr\\topologie\\Euro28", "Euro28", 10, 1000.0, 0.99, scenarioFilesEuro, labels, outputFilesEuro);
+            //t.PerformTests("D:\\Dropbox\\politechnika\\mgr\\praca_mgr\\topologie\\DT14", "DT14-sprc", 10, 1000.0, 0.99, scenarioFilesDT14SpRc, labelsSpRc, outputFilesDT14SpRc, "Liczba zasobów przestrzennych");
+            //t.PerformTests("D:\\Dropbox\\politechnika\\mgr\\praca_mgr\\topologie\\DT14", "DT14-k", 10, 1000.0, 0.99, scenarioFilesDT14K, labelsK, outputFilesDT14K, "Liczba ścieżek kandydujących");
+            //t.PerformTests("D:\\Dropbox\\politechnika\\mgr\\praca_mgr\\topologie\\DT14", "DT14-gbps", 10, 1000.0, 0.99, scenarioFilesDT14From50To1000, labelsFrom50To1000, outputFilesDT14From50To1000, "Przepływność żądań");
+            //t.PerformTests("D:\\Dropbox\\politechnika\\mgr\\praca_mgr\\topologie\\DT14\\120Tbps", "DT14-120tbps", 10, 1000.0, 0.99, scenarioFilesDT14SpRc, labelsSpRc, outputFilesDT14SpRc, "Liczba zasobów przestrzennych");
+            //t.PerformTests("D:\\Dropbox\\politechnika\\mgr\\praca_mgr\\topologie\\DT14\\240Tbps", "DT14-240tbps", 10, 1000.0, 0.99, scenarioFilesDT14SpRc, labelsSpRc, outputFilesDT14SpRc, "Liczba zasobów przestrzennych");
+            //t.PerformTests("D:\\Dropbox\\politechnika\\mgr\\praca_mgr\\topologie\\Euro28", "Euro28-gbps", 10, 1000.0, 0.99, scenarioFilesEuro28From50To1000, labelsFrom50To1000, outputFilesEuro28From50To1000, "Przepływność żądań");
+            //t.PerformTests("D:\\Dropbox\\politechnika\\mgr\\praca_mgr\\topologie\\Euro28", "Euro28-sprc", 10, 1000.0, 0.99, scenarioFilesEuro28SpRc, labelsSpRc, outputFilesEuro28SpRc, "Liczba zasobów przestrzennych");
+            //t.PerformTests("D:\\Dropbox\\politechnika\\mgr\\praca_mgr\\topologie\\Euro28\\120Tbps", "Euro28-120Tbps-sprc", 10, 1000.0, 0.99, scenarioFilesEuro28SpRc, labelsSpRc, outputFilesEuro28SpRc, "Liczba zasobów przestrzennych");
+            t.PerformTests("D:\\Dropbox\\politechnika\\mgr\\praca_mgr\\topologie\\Euro28\\240Tbps", "Euro28-240Tbps-sprc", 10, 1000.0, 0.99, scenarioFilesEuro28SpRc, labelsSpRc, outputFilesEuro28SpRc, "Liczba zasobów przestrzennych");
             //t.TestForSpRc();
             //t.Tuning(10);
         }
