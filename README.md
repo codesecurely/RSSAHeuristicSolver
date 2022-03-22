@@ -1,4 +1,4 @@
-# RSAHeuristicSolver
+# RSSAHeuristicSolver
 
 This is not a RSA asymmetrical encryption algorithm cracker or anything of this sort. The RSA problem concerns routing and spectrum allocation in elastic optical networks, which means assignment of frequency resources, divided into 12.5 GHz spectrum slices grouped into channels and routing paths, i.e. sequences of network links to either anycast or unicast demands. The goal is to minimize the necessary spectrum to cover all demands.
 
